@@ -4,20 +4,44 @@
 
 class Fraction {
 public:
-    // Конструктор по умолчанию и с аргументами по умолчанию
-    Fraction(int numerator = 0, int denominator = 1);
+    Fraction();
+    Fraction(int numerator, int denominator = 1);
 
-    // Аксессоры
     int getNumerator() const;
-    void setNumerator(int numerator);
-
     int getDenominator() const;
+    void setNumerator(int numerator);
     void setDenominator(int denominator);
 
-private:
-    int numerator_;
-    int denominator_;
+    void input();
+    void output() const;
 
-    // вспомогательный метод: знаменатель всегда положительный
-    void normalizeSign();
+    Fraction operator+(const Fraction& other) const;
+    Fraction operator-(const Fraction& other) const;
+    Fraction operator*(const Fraction& other) const;
+    Fraction operator/(const Fraction& other) const;
+
+    Fraction& operator+=(const Fraction& other);
+    Fraction& operator-=(const Fraction& other);
+    Fraction& operator*=(const Fraction& other);
+    Fraction& operator/=(const Fraction& other);
+
+    bool operator==(const Fraction& other) const;
+    bool operator!=(const Fraction& other) const;
+    bool operator<(const Fraction& other) const;
+    bool operator<=(const Fraction& other) const;
+    bool operator>(const Fraction& other) const;
+    bool operator>=(const Fraction& other) const;
+
+    double toDouble() const;
+    static Fraction fromDouble(double value, int precision = 6);
+
+    static int gcd(int a, int b);
+    void reduce();
+
+    friend std::ostream& operator<<(std::ostream& out, const Fraction& f);
+    friend std::istream& operator>>(std::istream& in, Fraction& f);
+
+private:
+    int numerator_ = 0;
+    int denominator_ = 1;
 };
