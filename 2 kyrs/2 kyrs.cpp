@@ -1,13 +1,23 @@
 ﻿#include "Header.h"
 
 #include <iostream>
+#include <locale>
 
 int main() {
-    Fraction a(1, 2);
-    Fraction b(3, 4);
+    Fraction a, b;
+    setlocale(LC_ALL, "rus");
+    std::cout << "Введите первую дробь (числитель/знаменатель): ";
+    if (!(std::cin >> a)) { std::cout << "Ошибка ввода\n"; return 1; }
 
-    std::cout << "a = " << a.getNumerator() << '/' << a.getDenominator() << '\n';
-    std::cout << "b = " << b.getNumerator() << '/' << b.getDenominator() << '\n';
+    std::cout << "Введите вторую дробь (числитель/знаменатель): ";
+    if (!(std::cin >> b)) { std::cout << "Ошибка ввода\n"; return 1; }
+
+    std::cout << "a = " << a << '\n';
+    std::cout << "b = " << b << '\n';
+    std::cout << "a + b = " << a + b << '\n';
+    std::cout << "a - b = " << a - b << '\n';
+    std::cout << "a * b = " << a * b << '\n';
+    std::cout << "a / b = " << a / b << '\n';
 
     return 0;
 }

@@ -80,4 +80,34 @@ std::istream& operator>>(std::istream& in, Fraction& f) {
         in.setstate(std::ios::failbit);
     }
     return in;
+}// Арифметические операции
+Fraction Fraction::operator+(const Fraction& other) const {
+    return Fraction(
+        numerator_ * other.denominator_ + other.numerator_ * denominator_,
+        denominator_ * other.denominator_
+    );
+}
+
+Fraction Fraction::operator-(const Fraction& other) const {
+    return Fraction(
+        numerator_ * other.denominator_ - other.numerator_ * denominator_,
+        denominator_ * other.denominator_
+    );
+}
+
+Fraction Fraction::operator*(const Fraction& other) const {
+    return Fraction(
+        numerator_ * other.numerator_,
+        denominator_ * other.denominator_
+    );
+}
+
+Fraction Fraction::operator/(const Fraction& other) const {
+    if (other.numerator_ == 0) {
+        throw std::invalid_argument("Деление на нулевую дробь");
+    }
+    return Fraction(
+        numerator_ * other.denominator_,
+        denominator_ * other.numerator_
+    );
 }
