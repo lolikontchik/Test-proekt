@@ -6,6 +6,7 @@
 int main() {
     Fraction a, b;
     setlocale(LC_ALL, "rus");
+
     std::cout << "Введите первую дробь (числитель/знаменатель): ";
     if (!(std::cin >> a)) { std::cout << "Ошибка ввода\n"; return 1; }
 
@@ -18,6 +19,14 @@ int main() {
     std::cout << "a - b = " << a - b << '\n';
     std::cout << "a * b = " << a * b << '\n';
     std::cout << "a / b = " << a / b << '\n';
+
+    std::cout << std::boolalpha;
+    std::cout << "a == b: " << (a == b) << '\n';
+    std::cout << "a != b: " << (a != b) << '\n';
+    std::cout << "a <  b: " << (a < b) << '\n';
+    std::cout << "a <= b: " << (a <= b) << '\n';
+    std::cout << "a >  b: " << (a > b) << '\n';
+    std::cout << "a >= b: " << (a >= b) << '\n';
 
     return 0;
 }

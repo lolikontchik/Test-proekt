@@ -111,3 +111,28 @@ Fraction Fraction::operator/(const Fraction& other) const {
         denominator_ * other.numerator_
     );
 }
+// Равенство и неравенство
+bool Fraction::operator==(const Fraction& other) const {
+    return numerator_ * other.denominator_ == other.numerator_ * denominator_;
+}
+
+bool Fraction::operator!=(const Fraction& other) const {
+    return !(*this == other);
+}
+
+// Сравнения
+bool Fraction::operator<(const Fraction& other) const {
+    return numerator_ * other.denominator_ < other.numerator_ * denominator_;
+}
+
+bool Fraction::operator<=(const Fraction& other) const {
+    return numerator_ * other.denominator_ <= other.numerator_ * denominator_;
+}
+
+bool Fraction::operator>(const Fraction& other) const {
+    return numerator_ * other.denominator_ > other.numerator_ * denominator_;
+}
+
+bool Fraction::operator>=(const Fraction& other) const {
+    return numerator_ * other.denominator_ >= other.numerator_ * denominator_;
+}
