@@ -1,5 +1,4 @@
-#include "Header.h"
-
+#include "Fraction.h"
 #include <cmath>
 #include <cstdlib>
 #include <limits>

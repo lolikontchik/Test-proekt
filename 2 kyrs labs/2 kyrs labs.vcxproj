@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{c2bb93fc-f24a-4a91-8053-19aecabb41ff}</ProjectGuid>
-    <RootNamespace>My2kyrs</RootNamespace>
+    <ProjectGuid>{d5df0aa7-5cf7-42be-8d7d-d3eae81415c2}</ProjectGuid>
+    <RootNamespace>My2kyrslabs</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -123,11 +123,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="2 kyrs.cpp" />
-    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="..\2 kyrs\Fraction.cpp" />
+    <ClCompile Include="2 kyrs labs.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Header.h" />
+    <ClInclude Include="..\2 kyrs\Fraction.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
