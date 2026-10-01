@@ -91,6 +91,5 @@ int main() {
     fraction.reduce();
 
     std::cout << "После сокращения: " << fraction << '\n';
-
     return 0;
 }
