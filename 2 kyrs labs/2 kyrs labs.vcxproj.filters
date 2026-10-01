@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="2 kyrs labs.cpp">
+    <ClCompile Include="2 kyrs 1lab.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="..\2 kyrs\Fraction.cpp">
