@@ -15,15 +15,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="2 kyrs labs.cpp">
+    <ClCompile Include="2 kyrs 1 lab.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="..\2 kyrs\Fraction.cpp">
+    <ClCompile Include="Fraction.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\2 kyrs\Fraction.h">
+    <ClInclude Include="Fraction.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
   </ItemGroup>
