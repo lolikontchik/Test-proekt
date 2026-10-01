@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 
 #include <iostream>
 
@@ -10,34 +10,34 @@ private:
     void normalize();
 
 public:
-    // Конструкторы
+    // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹
     Fraction();
     Fraction(int numerator, int denominator = 1);
 
-    // Аксессоры
+    // РђРєСЃРµСЃСЃРѕСЂС‹
     int getNumerator() const;
     int getDenominator() const;
 
     void setNumerator(int numerator);
     void setDenominator(int denominator);
 
-    // Ввод и вывод
+    // Р’РІРѕРґ Рё РІС‹РІРѕРґ
     void input();
     void output() const;
 
-    // Арифметические операции
+    // РђСЂРёС„РјРµС‚РёС‡РµСЃРєРёРµ РѕРїРµСЂР°С†РёРё
     Fraction operator+(const Fraction& other) const;
     Fraction operator-(const Fraction& other) const;
     Fraction operator*(const Fraction& other) const;
     Fraction operator/(const Fraction& other) const;
 
-    // Составное присваивание
+    // РЎРѕСЃС‚Р°РІРЅРѕРµ РїСЂРёСЃРІР°РёРІР°РЅРёРµ
     Fraction& operator+=(const Fraction& other);
     Fraction& operator-=(const Fraction& other);
     Fraction& operator*=(const Fraction& other);
     Fraction& operator/=(const Fraction& other);
 
-    // Сравнение
+    // РЎСЂР°РІРЅРµРЅРёРµ
     bool operator==(const Fraction& other) const;
     bool operator!=(const Fraction& other) const;
     bool operator<(const Fraction& other) const;
@@ -49,11 +49,11 @@ public:
     double toDouble() const;
     static Fraction fromDouble(double value, int precision = 6);
 
-    // НОД и сокращение
+    // РќРћР” Рё СЃРѕРєСЂР°С‰РµРЅРёРµ
     static int gcd(int a, int b);
     void reduce();
 
-    // Потоковый ввод и вывод
+    // РџРѕС‚РѕРєРѕРІС‹Р№ РІРІРѕРґ Рё РІС‹РІРѕРґ
     friend std::ostream& operator<<(std::ostream& out,
         const Fraction& fraction);
 

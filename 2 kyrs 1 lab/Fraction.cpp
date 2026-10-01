@@ -1,9 +1,9 @@
-#include "Fraction.h"
+п»ї#include "Fraction.h"
 #include <cmath>
 #include <cstdlib>
 #include <limits>
 
-// Конструкторы
+// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹
 
 Fraction::Fraction()
     : numerator_(0), denominator_(1) {
@@ -13,14 +13,14 @@ Fraction::Fraction(int numerator, int denominator)
     : numerator_(numerator), denominator_(denominator) {
     if (denominator_ == 0) {
         throw std::invalid_argument(
-            "Знаменатель не может быть равен нулю"
+            "Р—РЅР°РјРµРЅР°С‚РµР»СЊ РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ СЂР°РІРµРЅ РЅСѓР»СЋ"
         );
     }
 
     normalize();
 }
 
-// Нормализация дроби
+// РќРѕСЂРјР°Р»РёР·Р°С†РёСЏ РґСЂРѕР±Рё
 
 void Fraction::normalize() {
     if (denominator_ < 0) {
@@ -29,7 +29,7 @@ void Fraction::normalize() {
     }
 }
 
-// Аксессоры
+// РђРєСЃРµСЃСЃРѕСЂС‹
 
 int Fraction::getNumerator() const {
     return numerator_;
@@ -46,7 +46,7 @@ void Fraction::setNumerator(int numerator) {
 void Fraction::setDenominator(int denominator) {
     if (denominator == 0) {
         throw std::invalid_argument(
-            "Знаменатель не может быть равен нулю"
+            "Р—РЅР°РјРµРЅР°С‚РµР»СЊ РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ СЂР°РІРµРЅ РЅСѓР»СЋ"
         );
     }
 
@@ -54,7 +54,7 @@ void Fraction::setDenominator(int denominator) {
     normalize();
 }
 
-// Ввод и вывод
+// Р’РІРѕРґ Рё РІС‹РІРѕРґ
 
 void Fraction::input() {
     std::cin >> *this;
@@ -94,7 +94,7 @@ std::istream& operator>>(std::istream& in,
     return in;
 }
 
-// Арифметические операции
+// РђСЂРёС„РјРµС‚РёС‡РµСЃРєРёРµ РѕРїРµСЂР°С†РёРё
 
 Fraction Fraction::operator+(const Fraction& other) const {
     Fraction result(
@@ -131,7 +131,7 @@ Fraction Fraction::operator*(const Fraction& other) const {
 Fraction Fraction::operator/(const Fraction& other) const {
     if (other.numerator_ == 0) {
         throw std::invalid_argument(
-            "Нельзя делить на нулевую дробь"
+            "РќРµР»СЊР·СЏ РґРµР»РёС‚СЊ РЅР° РЅСѓР»РµРІСѓСЋ РґСЂРѕР±СЊ"
         );
     }
 
@@ -144,7 +144,7 @@ Fraction Fraction::operator/(const Fraction& other) const {
     return result;
 }
 
-// Составное присваивание
+// РЎРѕСЃС‚Р°РІРЅРѕРµ РїСЂРёСЃРІР°РёРІР°РЅРёРµ
 
 Fraction& Fraction::operator+=(const Fraction& other) {
     *this = *this + other;
@@ -166,7 +166,7 @@ Fraction& Fraction::operator/=(const Fraction& other) {
     return *this;
 }
 
-// Сравнение
+// РЎСЂР°РІРЅРµРЅРёРµ
 
 bool Fraction::operator==(const Fraction& other) const {
     return numerator_ * other.denominator_
@@ -194,19 +194,19 @@ bool Fraction::operator>=(const Fraction& other) const {
     return other < *this || *this == other;
 }
 
-// Преобразование в double
+// РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРµ РІ double
 
 double Fraction::toDouble() const {
     return static_cast<double>(numerator_)
         / denominator_;
 }
 
-// Создание дроби из double
+// РЎРѕР·РґР°РЅРёРµ РґСЂРѕР±Рё РёР· double
 
 Fraction Fraction::fromDouble(double value, int precision) {
     if (precision < 0) {
         throw std::invalid_argument(
-            "Точность не может быть отрицательной"
+            "РўРѕС‡РЅРѕСЃС‚СЊ РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РѕС‚СЂРёС†Р°С‚РµР»СЊРЅРѕР№"
         );
     }
 
@@ -215,7 +215,7 @@ Fraction Fraction::fromDouble(double value, int precision) {
     for (int i = 0; i < precision; ++i) {
         if (factor > std::numeric_limits<int>::max() / 10) {
             throw std::overflow_error(
-                "Слишком большая точность"
+                "РЎР»РёС€РєРѕРј Р±РѕР»СЊС€Р°СЏ С‚РѕС‡РЅРѕСЃС‚СЊ"
             );
         }
 
@@ -232,7 +232,7 @@ Fraction Fraction::fromDouble(double value, int precision) {
     return result;
 }
 
-// НОД
+// РќРћР”
 
 int Fraction::gcd(int a, int b) {
     a = std::abs(a);
@@ -247,7 +247,7 @@ int Fraction::gcd(int a, int b) {
     return a;
 }
 
-// Сокращение
+// РЎРѕРєСЂР°С‰РµРЅРёРµ
 
 void Fraction::reduce() {
     int divisor = gcd(numerator_, denominator_);
