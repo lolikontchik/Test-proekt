@@ -52,7 +52,6 @@ int main() {
     std::cout << "\nСоставное присваивание:\n";
 
     Fraction temp = a;
-
     temp += b;
     std::cout << "temp += b: " << temp << '\n';
 
