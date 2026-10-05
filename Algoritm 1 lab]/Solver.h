@@ -15,16 +15,26 @@ public:
     void setMatrix(const std::vector<std::vector<long long>>& matrix, int start);
 
     void solveExact();
-    void solveNearestNeighbor();
+    void solveWorstRow();
 
     long long getBestCost() const;
     long long getWorstCost() const;
     std::vector<int> getBestPath() const;
     std::vector<int> getWorstPath() const;
     std::string getMethodName() const;
+    int getN() const;
+    int getStart() const;
 
-    static void runTimeExperiments(int maxN = 13, double stopAfterSeconds = 10.0);
-    static void runQualityReport(int n, long long minCost, long long maxCost, int runs);
+    static void runTimeExperiments(int nStart, int nEnd, int nStep,
+        double stopAfterSeconds,
+        long long minCost, long long maxCost);
+
+    static void runQualityReport(int n, long long minCost, long long maxCost,
+        int runs, bool showDetails = true);
+
+    static void runLargeScaleReport(const std::vector<int>& sizes,
+        long long minCost, long long maxCost,
+        int runs);
 
 private:
     int n_ = 0;
@@ -41,4 +51,7 @@ private:
 
     long long pathCost(const std::vector<int>& path) const;
     static bool nextPermutation(std::vector<int>& p);
+
+    static std::vector<std::vector<long long>>
+        makeRandomMatrix(int n, long long minCost, long long maxCost);
 };

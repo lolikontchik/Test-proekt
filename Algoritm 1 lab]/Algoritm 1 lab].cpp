@@ -1,27 +1,61 @@
 ﻿#include "Solver.h"
 #include <iostream>
 #include <locale>
+#include <vector>
 
 int main() {
     setlocale(LC_ALL, "rus");
-    // Рост времени полного перебора
-    TspSolver::runTimeExperiments(13, 10.0);
 
-    // Отчёты о качестве эвристики
-    std::cout << "\nОтчёты о качестве эвристики\n";
+    const int    timeNStart = 3;
+    const int    timeNEnd = 13;
+    const int    timeNStep = 1;
+    const double timeStop = 10.0;
+    const long long timeMin = 1;
+    const long long timeMax = 1000;
 
-    TspSolver::runQualityReport(4, 1, 10, 5);
-    TspSolver::runQualityReport(4, 1, 100, 5);
-    TspSolver::runQualityReport(4, 1, 1000, 5);
+    struct QualityCase {
+        int n;
+        long long minCost;
+        long long maxCost;
+        int runs;
+    };
+    const std::vector<QualityCase> qualityCases = {
+        { 4,   1,   10, 5 },
+        { 4,   1,  100, 5 },
+        { 4,   1, 1000, 5 },
+        { 6,   1,  100, 5 },
+        { 6,   1, 1000, 5 },
+        { 8,   1,  100, 4 },
+        { 8,   1, 1000, 4 },
+        { 10,  1,  100, 3 },
+        { 10,  1, 1000, 3 },
+        { 11,  1, 1000, 3 },
+    };
+    const bool qualityShowDetails = true;
 
-    TspSolver::runQualityReport(6, 1, 100, 5);
-    TspSolver::runQualityReport(6, 1, 1000, 5);
+    const std::vector<int> largeSizes = { 100, 1000 };
+    const long long largeMin = 1;
+    const long long largeMax = 1000;
+    const int       largeRuns = 4;
 
-    TspSolver::runQualityReport(8, 1, 100, 4);
-    TspSolver::runQualityReport(8, 1, 1000, 4);
+    std::cout << "=============================================\n";
+    std::cout << "--- ТЕСТ 1. Рост времени полного перебора ---\n";
+    std::cout << "=============================================\n";
+    TspSolver::runTimeExperiments(timeNStart, timeNEnd, timeNStep,
+        timeStop, timeMin, timeMax);
 
-    TspSolver::runQualityReport(10, 1, 100, 3);
-    TspSolver::runQualityReport(10, 1, 1000, 3);
+    std::cout << "\n=============================================\n";
+    std::cout << "--- ТЕСТ 2. Качество эвристики WorstRow ---\n";
+    std::cout << "=============================================\n";
+    for (const auto& c : qualityCases) {
+        TspSolver::runQualityReport(c.n, c.minCost, c.maxCost,
+            c.runs, qualityShowDetails);
+    }
+
+    std::cout << "\n=============================================\n";
+    std::cout << "--- ТЕСТ 3. WorstRow на больших N ---\n";
+    std::cout << "=============================================\n";
+    TspSolver::runLargeScaleReport(largeSizes, largeMin, largeMax, largeRuns);
 
     return 0;
 }

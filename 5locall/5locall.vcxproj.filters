@@ -15,15 +15,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Algaritm1.cpp">
+    <ClCompile Include="5locall.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="..\Algem1\Solver.cpp">
+    <ClCompile Include="..\..\..\..\..\..\failiki\Bob.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Algem1\Solver.h">
+    <ClInclude Include="..\..\..\..\..\..\failiki\Bob.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
   </ItemGroup>
