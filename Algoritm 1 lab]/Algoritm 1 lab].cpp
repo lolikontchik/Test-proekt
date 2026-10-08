@@ -45,7 +45,7 @@ int main() {
         timeStop, timeMin, timeMax);
 
     std::cout << "\n=============================================\n";
-    std::cout << "--- ТЕСТ 2. Качество эвристики WorstRow ---\n";
+    std::cout << "--- ТЕСТ 2. Качество жадного алгоритма ---\n";
     std::cout << "=============================================\n";
     for (const auto& c : qualityCases) {
         TspSolver::runQualityReport(c.n, c.minCost, c.maxCost,
@@ -53,7 +53,7 @@ int main() {
     }
 
     std::cout << "\n=============================================\n";
-    std::cout << "--- ТЕСТ 3. WorstRow на больших N ---\n";
+    std::cout << "--- ТЕСТ 3. Жадный алгоритм на больших N ---\n";
     std::cout << "=============================================\n";
     TspSolver::runLargeScaleReport(largeSizes, largeMin, largeMax, largeRuns);
 

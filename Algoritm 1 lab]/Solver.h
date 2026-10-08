@@ -15,7 +15,7 @@ public:
     void setMatrix(const std::vector<std::vector<long long>>& matrix, int start);
 
     void solveExact();
-    void solveWorstRow();
+    void solveNearestNeighbor();
 
     long long getBestCost() const;
     long long getWorstCost() const;
