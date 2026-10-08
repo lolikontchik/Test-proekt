@@ -2,8 +2,9 @@
 #include <cmath>
 #include <cstdlib>
 #include <limits>
+#include <stdexcept>
 
-// Конструкторы
+// ---------- Конструкторы ----------
 
 Fraction::Fraction()
     : numerator_(0), denominator_(1) {
@@ -16,11 +17,13 @@ Fraction::Fraction(int numerator, int denominator)
             "Знаменатель не может быть равен нулю"
         );
     }
-
+    // Только нормализуем знак.
+    // Сокращение — отдельная операция (reduce), вызывается
+    // в operator>> и в арифметических операторах.
     normalize();
 }
 
-// Нормализация дроби
+// ---------- Нормализация знака ----------
 
 void Fraction::normalize() {
     if (denominator_ < 0) {
@@ -29,7 +32,7 @@ void Fraction::normalize() {
     }
 }
 
-// Аксессоры
+// ---------- Аксессоры ----------
 
 int Fraction::getNumerator() const {
     return numerator_;
@@ -49,12 +52,11 @@ void Fraction::setDenominator(int denominator) {
             "Знаменатель не может быть равен нулю"
         );
     }
-
     denominator_ = denominator;
     normalize();
 }
 
-// Ввод и вывод
+// ---------- Ввод и вывод ----------
 
 void Fraction::input() {
     std::cin >> *this;
@@ -68,7 +70,6 @@ std::ostream& operator<<(std::ostream& out,
     const Fraction& fraction) {
     out << fraction.numerator_ << '/'
         << fraction.denominator_;
-
     return out;
 }
 
@@ -89,12 +90,15 @@ std::istream& operator>>(std::istream& in,
 
     fraction.numerator_ = numerator;
     fraction.denominator_ = denominator;
-    fraction.normalize();
+
+    // ВАЖНО: сокращаем именно то, что ввёл пользователь.
+    // reduce() внутри также вызывает normalize().
+    fraction.reduce();
 
     return in;
 }
 
-// Арифметические операции
+// ---------- Арифметические операции ----------
 
 Fraction Fraction::operator+(const Fraction& other) const {
     Fraction result(
@@ -102,7 +106,6 @@ Fraction Fraction::operator+(const Fraction& other) const {
         + other.numerator_ * denominator_,
         denominator_ * other.denominator_
     );
-
     result.reduce();
     return result;
 }
@@ -113,7 +116,6 @@ Fraction Fraction::operator-(const Fraction& other) const {
         - other.numerator_ * denominator_,
         denominator_ * other.denominator_
     );
-
     result.reduce();
     return result;
 }
@@ -123,7 +125,6 @@ Fraction Fraction::operator*(const Fraction& other) const {
         numerator_ * other.numerator_,
         denominator_ * other.denominator_
     );
-
     result.reduce();
     return result;
 }
@@ -134,17 +135,15 @@ Fraction Fraction::operator/(const Fraction& other) const {
             "Нельзя делить на нулевую дробь"
         );
     }
-
     Fraction result(
         numerator_ * other.denominator_,
         denominator_ * other.numerator_
     );
-
     result.reduce();
     return result;
 }
 
-// Составное присваивание
+// ---------- Составное присваивание ----------
 
 Fraction& Fraction::operator+=(const Fraction& other) {
     *this = *this + other;
@@ -166,7 +165,7 @@ Fraction& Fraction::operator/=(const Fraction& other) {
     return *this;
 }
 
-// Сравнение
+// ---------- Сравнение ----------
 
 bool Fraction::operator==(const Fraction& other) const {
     return numerator_ * other.denominator_
@@ -194,14 +193,11 @@ bool Fraction::operator>=(const Fraction& other) const {
     return other < *this || *this == other;
 }
 
-// Преобразование в double
+// ---------- double ----------
 
 double Fraction::toDouble() const {
-    return static_cast<double>(numerator_)
-        / denominator_;
+    return static_cast<double>(numerator_) / denominator_;
 }
-
-// Создание дроби из double
 
 Fraction Fraction::fromDouble(double value, int precision) {
     if (precision < 0) {
@@ -211,14 +207,12 @@ Fraction Fraction::fromDouble(double value, int precision) {
     }
 
     int factor = 1;
-
     for (int i = 0; i < precision; ++i) {
         if (factor > std::numeric_limits<int>::max() / 10) {
             throw std::overflow_error(
                 "Слишком большая точность"
             );
         }
-
         factor *= 10;
     }
 
@@ -228,11 +222,10 @@ Fraction Fraction::fromDouble(double value, int precision) {
 
     Fraction result(numerator, factor);
     result.reduce();
-
     return result;
 }
 
-// НОД
+// ---------- НОД (алгоритм Евклида) ----------
 
 int Fraction::gcd(int a, int b) {
     a = std::abs(a);
@@ -247,7 +240,7 @@ int Fraction::gcd(int a, int b) {
     return a;
 }
 
-// Сокращение
+// ---------- Сокращение ----------
 
 void Fraction::reduce() {
     int divisor = gcd(numerator_, denominator_);

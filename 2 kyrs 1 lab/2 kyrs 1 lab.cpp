@@ -85,11 +85,9 @@ int main() {
     std::cout << "\nСокращение:\n";
 
     Fraction fraction(24, 36);
-
     std::cout << "До сокращения: " << fraction << '\n';
-
     fraction.reduce();
-
     std::cout << "После сокращения: " << fraction << '\n';
+
     return 0;
 }
