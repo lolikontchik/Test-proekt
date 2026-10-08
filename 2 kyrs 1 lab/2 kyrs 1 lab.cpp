@@ -12,7 +12,7 @@ int main() {
     std::cin >> a;
 
     if (std::cin.fail()) {
-        std::cout << "Ошибка ввода первой дроби.\n";
+        std::cout << "Ошибка ввода первой дроби\n";
         return 1;
     }
 
@@ -20,7 +20,7 @@ int main() {
     std::cin >> b;
 
     if (std::cin.fail()) {
-        std::cout << "Ошибка ввода второй дроби.\n";
+        std::cout << "Ошибка ввода второй дроби\n";
         return 1;
     }
 
@@ -36,7 +36,7 @@ int main() {
         std::cout << "a / b = " << a / b << '\n';
     }
     else {
-        std::cout << "a / b невозможно: деление на ноль.\n";
+        std::cout << "невозможно: деление на ноль\n";
     }
 
     std::cout << std::boolalpha;
