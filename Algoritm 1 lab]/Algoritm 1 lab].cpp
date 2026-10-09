@@ -41,21 +41,21 @@ int main() {
     std::cout << "=============================================\n";
     std::cout << "--- ТЕСТ 1. Рост времени полного перебора ---\n";
     std::cout << "=============================================\n";
-    TspSolver::runTimeExperiments(timeNStart, timeNEnd, timeNStep,
+    runTimeExperiments(timeNStart, timeNEnd, timeNStep,
         timeStop, timeMin, timeMax);
 
     std::cout << "\n=============================================\n";
     std::cout << "--- ТЕСТ 2. Качество жадного алгоритма ---\n";
     std::cout << "=============================================\n";
     for (const auto& c : qualityCases) {
-        TspSolver::runQualityReport(c.n, c.minCost, c.maxCost,
+        runQualityReport(c.n, c.minCost, c.maxCost,
             c.runs, qualityShowDetails);
     }
 
     std::cout << "\n=============================================\n";
     std::cout << "--- ТЕСТ 3. Жадный алгоритм на больших N ---\n";
     std::cout << "=============================================\n";
-    TspSolver::runLargeScaleReport(largeSizes, largeMin, largeMax, largeRuns);
+    runLargeScaleReport(largeSizes, largeMin, largeMax, largeRuns);
 
     return 0;
 }

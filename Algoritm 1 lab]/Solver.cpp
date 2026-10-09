@@ -7,92 +7,25 @@
 #include <limits>
 #include <random>
 
-TspSolver::TspSolver(const std::vector<std::vector<long long>>& matrix, int start)
-    : n_(static_cast<int>(matrix.size())),
-    start_(start),
-    d_(matrix) {
-}
-
-void TspSolver::input() {
-    std::cout << "Введите количество городов и начальный город: ";
-    std::cin >> n_ >> start_;
-
-    d_.assign(n_, std::vector<long long>(n_));
-    std::cout << "Введите матрицу стоимостей " << n_ << "x" << n_ << ":\n";
-    for (int i = 0; i < n_; ++i)
-        for (int j = 0; j < n_; ++j)
-            std::cin >> d_[i][j];
-
-    solved_ = false;
-}
-
-void TspSolver::output() const {
-    if (!solved_) {
-        std::cout << "Решение ещё не найдено.\n";
-        return;
-    }
-    std::cout << "Метод: " << method_ << '\n';
-    std::cout << "Лучшая стоимость: " << bestCost_ << '\n';
-    std::cout << "Лучший маршрут:   ";
-    for (int v : bestPath_) std::cout << (v + 1) << ' ';
-    std::cout << '\n';
-
-    if (!worstPath_.empty()) {
-        std::cout << "Худшая стоимость: " << worstCost_ << '\n';
-        std::cout << "Худший маршрут:   ";
-        for (int v : worstPath_) std::cout << (v + 1) << ' ';
-        std::cout << '\n';
-    }
-}
-
-void TspSolver::setMatrix(const std::vector<std::vector<long long>>& matrix, int start) {
-    n_ = static_cast<int>(matrix.size());
-    start_ = start;
-    d_ = matrix;
-    solved_ = false;
-    bestPath_.clear();
-    worstPath_.clear();
-    bestCost_ = worstCost_ = 0;
-}
-
-void TspSolver::generateRandom(int n, long long minCost, long long maxCost) {
-    d_ = makeRandomMatrix(n, minCost, maxCost);
-    n_ = n;
-    start_ = 0;
-    solved_ = false;
-    bestPath_.clear();
-    worstPath_.clear();
-    bestCost_ = worstCost_ = 0;
-}
-
-std::vector<std::vector<long long>>
-TspSolver::makeRandomMatrix(int n, long long minCost, long long maxCost) {
+Matrix makeRandomMatrix(int n, long long minCost, long long maxCost) {
     std::mt19937_64 rng(std::chrono::steady_clock::now().time_since_epoch().count());
     std::uniform_int_distribution<long long> dist(minCost, maxCost);
 
-    std::vector<std::vector<long long>> m(n, std::vector<long long>(n, 0));
+    Matrix m(n, std::vector<long long>(n, 0));
     for (int i = 0; i < n; ++i)
         for (int j = 0; j < n; ++j)
             if (i != j) m[i][j] = dist(rng);
     return m;
 }
 
-long long TspSolver::getBestCost() const { return bestCost_; }
-long long TspSolver::getWorstCost() const { return worstCost_; }
-std::vector<int> TspSolver::getBestPath() const { return bestPath_; }
-std::vector<int> TspSolver::getWorstPath() const { return worstPath_; }
-std::string TspSolver::getMethodName() const { return method_; }
-int TspSolver::getN() const { return n_; }
-int TspSolver::getStart() const { return start_; }
-
-long long TspSolver::pathCost(const std::vector<int>& path) const {
+long long pathCost(const Matrix& d, const std::vector<int>& path) {
     long long s = 0;
     for (size_t i = 0; i + 1 < path.size(); ++i)
-        s += d_[path[i]][path[i + 1]];
+        s += d[path[i]][path[i + 1]];
     return s;
 }
 
-bool TspSolver::nextPermutation(std::vector<int>& p) {
+static bool nextPermutation(std::vector<int>& p) {
     int n = static_cast<int>(p.size());
     int i = n - 2;
     while (i >= 0 && p[i] >= p[i + 1]) --i;
@@ -106,85 +39,85 @@ bool TspSolver::nextPermutation(std::vector<int>& p) {
     return true;
 }
 
-void TspSolver::solveExact() {
-    method_ = "Полный перебор";
-    worstPath_.clear();
-    worstCost_ = 0;
+void solveExact(const Matrix& d, int start,
+    long long& bestCost, std::vector<int>& bestPath,
+    long long& worstCost, std::vector<int>& worstPath) {
+    int n = static_cast<int>(d.size());
 
-    if (n_ == 1) {
-        bestCost_ = worstCost_ = 0;
-        bestPath_ = worstPath_ = { start_, start_ };
-        solved_ = true;
+    bestPath.clear();
+    worstPath.clear();
+    bestCost = 0;
+    worstCost = 0;
+
+    if (n == 1) {
+        bestCost = worstCost = 0;
+        bestPath = worstPath = { start, start };
         return;
     }
 
     std::vector<int> perm;
-    perm.reserve(n_ - 1);
-    for (int i = 0; i < n_; ++i)
-        if (i != start_) perm.push_back(i);
+    perm.reserve(n - 1);
+    for (int i = 0; i < n; ++i)
+        if (i != start) perm.push_back(i);
     std::sort(perm.begin(), perm.end());
 
-    bestCost_ = std::numeric_limits<long long>::max();
-    worstCost_ = -std::numeric_limits<long long>::max();
-    bestPath_.clear();
+    bestCost = std::numeric_limits<long long>::max();
+    worstCost = -std::numeric_limits<long long>::max();
 
     std::vector<int> path;
-    path.reserve(n_ + 1);
+    path.reserve(n + 1);
 
     do {
         path.clear();
-        path.push_back(start_);
+        path.push_back(start);
         path.insert(path.end(), perm.begin(), perm.end());
-        path.push_back(start_);
+        path.push_back(start);
 
-        long long cur = pathCost(path);
+        long long cur = pathCost(d, path);
 
-        if (cur < bestCost_) { bestCost_ = cur; bestPath_ = path; }
-        if (cur > worstCost_) { worstCost_ = cur; worstPath_ = path; }
+        if (cur < bestCost) { bestCost = cur; bestPath = path; }
+        if (cur > worstCost) { worstCost = cur; worstPath = path; }
     } while (nextPermutation(perm));
-
-    solved_ = true;
 }
 
-void TspSolver::solveNearestNeighbor() {
-    method_ = "Жадный алгоритм (ближайший сосед)";
-    worstPath_.clear();
-    worstCost_ = 0;
+void solveNearestNeighbor(const Matrix& d, int start,
+    long long& bestCost, std::vector<int>& bestPath) {
+    int n = static_cast<int>(d.size());
 
-    if (n_ <= 1) {
-        bestCost_ = 0;
-        bestPath_ = { start_, start_ };
-        solved_ = true;
+    bestPath.clear();
+    bestCost = 0;
+
+    if (n <= 1) {
+        bestCost = 0;
+        bestPath = { start, start };
         return;
     }
 
-    std::vector<bool> visited(n_, false);
-    bestPath_.clear();
-    bestPath_.reserve(n_ + 1);
+    std::vector<bool> visited(n, false);
+    bestPath.reserve(n + 1);
 
-    int cur = start_;
+    int cur = start;
     visited[cur] = true;
-    bestPath_.push_back(cur);
+    bestPath.push_back(cur);
 
-    for (int step = 1; step < n_; ++step) {
+    for (int step = 1; step < n; ++step) {
         int bestV = -1;
         long long bestW = std::numeric_limits<long long>::max();
-        for (int v = 0; v < n_; ++v) {
-            if (!visited[v] && d_[cur][v] < bestW) {
-                bestW = d_[cur][v];
+        for (int v = 0; v < n; ++v) {
+            if (!visited[v] && d[cur][v] < bestW) {
+                bestW = d[cur][v];
                 bestV = v;
             }
         }
-        bestPath_.push_back(bestV);
+        bestPath.push_back(bestV);
         visited[bestV] = true;
         cur = bestV;
     }
-    bestPath_.push_back(start_);
-    bestCost_ = pathCost(bestPath_);
-    solved_ = true;
+    bestPath.push_back(start);
+    bestCost = pathCost(d, bestPath);
 }
 
-void TspSolver::runTimeExperiments(int nStart, int nEnd, int nStep,
+void runTimeExperiments(int nStart, int nEnd, int nStep,
     double stopAfterSeconds,
     long long minCost, long long maxCost) {
     std::cout << std::fixed << std::setprecision(3);
@@ -200,18 +133,20 @@ void TspSolver::runTimeExperiments(int nStart, int nEnd, int nStep,
     }
 
     for (int n = nStart; n <= nEnd; n += nStep) {
-        TspSolver solver;
-        solver.generateRandom(n, minCost, maxCost);
+        Matrix d = makeRandomMatrix(n, minCost, maxCost);
+
+        long long bestCost = 0, worstCost = 0;
+        std::vector<int> bestPath, worstPath;
 
         auto t1 = std::chrono::steady_clock::now();
-        solver.solveExact();
+        solveExact(d, 0, bestCost, bestPath, worstCost, worstPath);
         auto t2 = std::chrono::steady_clock::now();
 
         double sec = std::chrono::duration<double>(t2 - t1).count();
         std::cout << "Городов = " << std::setw(3) << n
             << " | время = " << std::setw(10) << sec << " с"
-            << " | лучшее = " << solver.getBestCost()
-            << " | худшее = " << solver.getWorstCost() << '\n';
+            << " | лучшее = " << bestCost
+            << " | худшее = " << worstCost << '\n';
 
         if (sec > stopAfterSeconds) {
             std::cout << "  слишком долго, дальнейшие размерности пропускаем\n";
@@ -220,7 +155,7 @@ void TspSolver::runTimeExperiments(int nStart, int nEnd, int nStep,
     }
 }
 
-void TspSolver::runQualityReport(int n, long long minCost, long long maxCost,
+void runQualityReport(int n, long long minCost, long long maxCost,
     int runs, bool showDetails) {
     std::cout << std::fixed << std::setprecision(4);
     std::cout << "\nОтчёт: городов = " << n
@@ -232,36 +167,32 @@ void TspSolver::runQualityReport(int n, long long minCost, long long maxCost,
     double sumHeurTime = 0.0;
 
     for (int run = 1; run <= runs; ++run) {
-        auto m = makeRandomMatrix(n, minCost, maxCost);
+        Matrix d = makeRandomMatrix(n, minCost, maxCost);
 
-        TspSolver exact(m, 0);
-        TspSolver heur(m, 0);
+        long long bestCost = 0, worstCost = 0, hcost = 0;
+        std::vector<int> bestPath, worstPath, hpath;
 
         auto t1 = std::chrono::steady_clock::now();
-        exact.solveExact();
+        solveExact(d, 0, bestCost, bestPath, worstCost, worstPath);
         auto t2 = std::chrono::steady_clock::now();
         double exactTime = std::chrono::duration<double>(t2 - t1).count();
 
         auto t3 = std::chrono::steady_clock::now();
-        heur.solveNearestNeighbor();
+        solveNearestNeighbor(d, 0, hcost, hpath);
         auto t4 = std::chrono::steady_clock::now();
         double heurTime = std::chrono::duration<double>(t4 - t3).count();
 
-        long long best = exact.getBestCost();
-        long long worst = exact.getWorstCost();
-        long long hcost = heur.getBestCost();
-
-        double quality = (worst == best)
+        double quality = (worstCost == bestCost)
             ? 100.0
-            : 100.0 * (double)(worst - hcost) / (double)(worst - best);
+            : 100.0 * (double)(worstCost - hcost) / (double)(worstCost - bestCost);
         sumQuality += quality;
         sumExactTime += exactTime;
         sumHeurTime += heurTime;
 
         if (showDetails) {
             std::cout << "Запуск " << run << ":\n";
-            std::cout << "  Точный метод:   лучшее = " << std::setw(6) << best
-                << " | худшее = " << std::setw(6) << worst
+            std::cout << "  Точный метод:   лучшее = " << std::setw(6) << bestCost
+                << " | худшее = " << std::setw(6) << worstCost
                 << " | время = " << std::setw(10) << exactTime << " с\n";
             std::cout << "  Жадный метод:   решение = " << std::setw(6) << hcost
                 << " | время = " << std::setw(10) << heurTime << " с\n";
@@ -278,7 +209,7 @@ void TspSolver::runQualityReport(int n, long long minCost, long long maxCost,
         << std::setprecision(4) << (sumHeurTime / runs) << " с\n";
 }
 
-void TspSolver::runLargeScaleReport(const std::vector<int>& sizes,
+void runLargeScaleReport(const std::vector<int>& sizes,
     long long minCost, long long maxCost,
     int runs) {
     std::cout << std::fixed << std::setprecision(3);
@@ -299,19 +230,21 @@ void TspSolver::runLargeScaleReport(const std::vector<int>& sizes,
         long long sumCost = 0;
 
         for (int run = 1; run <= runs; ++run) {
-            TspSolver solver;
-            solver.generateRandom(n, minCost, maxCost);
+            Matrix d = makeRandomMatrix(n, minCost, maxCost);
+
+            long long cost = 0;
+            std::vector<int> path;
 
             auto t1 = std::chrono::steady_clock::now();
-            solver.solveNearestNeighbor();
+            solveNearestNeighbor(d, 0, cost, path);
             auto t2 = std::chrono::steady_clock::now();
             double sec = std::chrono::duration<double>(t2 - t1).count();
 
             sumTime += sec;
-            sumCost += solver.getBestCost();
+            sumCost += cost;
 
             std::cout << "Запуск #" << run
-                << " | Жадный [стоимость: " << solver.getBestCost()
+                << " | Жадный [стоимость: " << cost
                 << ", время: " << sec << " с]\n";
         }
 
