@@ -126,6 +126,11 @@ int findFirst(const std::string& text, const std::string& pattern)
     const std::u32string u32text = toU32(text);
     const std::u32string u32pattern = toU32(pattern);
 
+    if (u32text.empty())
+    {
+        return -1;
+    }
+
     const std::vector<int> all =
         search(u32text, u32pattern, 0, static_cast<int>(u32text.size()) - 1);
 
@@ -136,6 +141,11 @@ int findFirst(const std::string& text, const std::string& pattern)
 std::vector<int> findAll(const std::string& text, const std::string& pattern)
 {
     const std::u32string u32text = toU32(text);
+
+    if (u32text.empty())
+    {
+        return {};
+    }
 
     return search(u32text, toU32(pattern), 0,
         static_cast<int>(u32text.size()) - 1);
@@ -148,6 +158,11 @@ std::vector<int> findAll(const std::string& text,
     int end)
 {
     const std::u32string u32text = toU32(text);
+
+    if (u32text.empty())
+    {
+        return {};
+    }
 
     return search(u32text, toU32(pattern), begin, end);
 }

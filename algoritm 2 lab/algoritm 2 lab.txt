@@ -1,0 +1,8 @@
+Введите текст: std::move_iterator is an iterator adaptor which behaves exactly like the underlying iterator
+Введите искомую подстроку: rat
+Длина текста: 92
+Первое вхождение: 13
+Все вхождения: [13, 28, 87]
+Введите начало диапазона: 0
+Введите конец диапазона: 91
+findAll(0, 91): [13, 28, 87]
