@@ -1,15 +1,15 @@
-#pragma once
+п»ї#pragma once
 
 #include <string>
 #include <vector>
 
-// 1. Индекс первого вхождения подстроки в тексте
+// 1. РРЅРґРµРєСЃ РїРµСЂРІРѕРіРѕ РІС…РѕР¶РґРµРЅРёСЏ РїРѕРґСЃС‚СЂРѕРєРё РІ С‚РµРєСЃС‚Рµ
 int findFirst(const std::string& text, const std::string& pattern);
 
-// 2. Индексы всех вхождений подстроки в тексте
+// 2. РРЅРґРµРєСЃС‹ РІСЃРµС… РІС…РѕР¶РґРµРЅРёР№ РїРѕРґСЃС‚СЂРѕРєРё РІ С‚РµРєСЃС‚Рµ
 std::vector<int> findAll(const std::string& text, const std::string& pattern);
 
-// 3. Индексы вхождений подстроки в тексте в диапазоне
+// 3. РРЅРґРµРєСЃС‹ РІС…РѕР¶РґРµРЅРёР№ РїРѕРґСЃС‚СЂРѕРєРё РІ С‚РµРєСЃС‚Рµ РІ РґРёР°РїР°Р·РѕРЅРµ
 std::vector<int> findAll(const std::string& text,
     const std::string& pattern,
     int begin,

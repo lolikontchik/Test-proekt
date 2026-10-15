@@ -1,4 +1,4 @@
-#include "BoyerMoore.h"
+п»ї#include "BoyerMoore.h"
 
 #include <algorithm>
 #include <codecvt>
@@ -11,7 +11,7 @@ static std::u32string toU32(const std::string& utf8)
     return converter.from_bytes(utf8);
 }
 
-// ---------- Таблица плохого символа ----------
+// ---------- РўР°Р±Р»РёС†Р° РїР»РѕС…РѕРіРѕ СЃРёРјРІРѕР»Р° ----------
 static std::unordered_map<char32_t, int> buildBadCharTable(const std::u32string& pattern)
 {
     std::unordered_map<char32_t, int> badChar;
@@ -30,7 +30,7 @@ static int getBadChar(const std::unordered_map<char32_t, int>& badChar, char32_t
     return (it == badChar.end()) ? -1 : it->second;
 }
 
-// ---------- Таблица хорошего суффикса ----------
+// ---------- РўР°Р±Р»РёС†Р° С…РѕСЂРѕС€РµРіРѕ СЃСѓС„С„РёРєСЃР° ----------
 static std::vector<int> buildGoodSuffixTable(const std::u32string& pattern)
 {
     const int m = static_cast<int>(pattern.size());
@@ -72,7 +72,7 @@ static std::vector<int> buildGoodSuffixTable(const std::u32string& pattern)
     return goodSuffix;
 }
 
-// ---------- Внутренний поиск ----------
+// ---------- Р’РЅСѓС‚СЂРµРЅРЅРёР№ РїРѕРёСЃРє ----------
 static std::vector<int> search(const std::u32string& text,
     const std::u32string& pattern,
     int start,
@@ -120,7 +120,7 @@ static std::vector<int> search(const std::u32string& text,
     return result;
 }
 
-// ---------- 1. Первое вхождение ----------
+// ---------- 1. РџРµСЂРІРѕРµ РІС…РѕР¶РґРµРЅРёРµ ----------
 int findFirst(const std::string& text, const std::string& pattern)
 {
     const std::u32string u32text = toU32(text);
@@ -137,7 +137,7 @@ int findFirst(const std::string& text, const std::string& pattern)
     return all.empty() ? -1 : all.front();
 }
 
-// ---------- 2. Все вхождения ----------
+// ---------- 2. Р’СЃРµ РІС…РѕР¶РґРµРЅРёСЏ ----------
 std::vector<int> findAll(const std::string& text, const std::string& pattern)
 {
     const std::u32string u32text = toU32(text);
@@ -151,7 +151,7 @@ std::vector<int> findAll(const std::string& text, const std::string& pattern)
         static_cast<int>(u32text.size()) - 1);
 }
 
-// ---------- 3. Все вхождения в диапазоне ----------
+// ---------- 3. Р’СЃРµ РІС…РѕР¶РґРµРЅРёСЏ РІ РґРёР°РїР°Р·РѕРЅРµ ----------
 std::vector<int> findAll(const std::string& text,
     const std::string& pattern,
     int begin,
