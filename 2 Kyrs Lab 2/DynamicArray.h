@@ -1,88 +1,69 @@
-#include <iostream>
-#include <cassert>
+#pragma once
+
+#include <cstddef>
+#include <iosfwd>
 
 class DynamicArray {
+public:
+    using iterator = int*;
+    using const_iterator = const int*;
+
 private:
-    int* arrayData_;
-    size_t arrayLength_;
+    int* data_;
+    size_t size_;
+    size_t capacity_;
+
+    static constexpr size_t kMinCapacity = 4;
+
+    void reserve(size_t newCapacity);
+    void shrinkIfNeeded();
 
 public:
-    DynamicArray() : arrayData_(nullptr), arrayLength_(0) {}
+    // --- Конструкторы / деструктор ---
+    DynamicArray();
+    DynamicArray(const int* src, size_t count);           // из обычного массива
+    DynamicArray(const DynamicArray& other);              // копирования
+    DynamicArray(DynamicArray&& other) noexcept;          // перемещения
+    ~DynamicArray();
 
-    ~DynamicArray() {
-        delete[] arrayData_;
-    }
+    // --- Присваивание ---
+    DynamicArray& operator=(const DynamicArray& other);
+    DynamicArray& operator=(DynamicArray&& other) noexcept;
 
-    void push_back(int value) {
-        size_t newLength = arrayLength_ + 1;
-        int* new_data = new int[newLength];
+    // --- Размер / состояние ---
+    size_t size()     const;
+    size_t capacity() const;
+    bool   empty()    const;
 
-        for (size_t i = 0; i < arrayLength_; ++i) {
-            new_data[i] = arrayData_[i];
-        }
+    // --- Обмен ---
+    void swap(DynamicArray& other) noexcept;
 
-        new_data[arrayLength_] = value;
+    // --- Поиск ---
+    long long find(int value) const;          // индекс или -1
+    int  max() const;                          // требует непустого массива
+    int  min() const;                          // требует непустого массива
 
-        delete[] arrayData_;
-        arrayData_ = new_data;
-        arrayLength_ = newLength;
-    }
+    // --- Модификация ---
+    bool insertAt(size_t index, int value);   // false при некорректном индексе
+    bool removeAt(size_t index);              // false при некорректном индексе
+    bool removeValue(int value);              // первое вхождение
+    void removeAll(int value);                // все вхождения
 
-    void pop_back() {
-        assert(arrayLength_ > 0 && "Массив пуст, нечего удалять!");
+    // --- Сортировка ---
+    void sort();                               // по возрастанию
 
-        size_t newLength = arrayLength_ - 1;
-        int* new_data = nullptr;
+    // --- Итераторы ---
+    iterator       begin();
+    iterator       end();
+    const_iterator begin() const;
+    const_iterator end()   const;
 
-        if (newLength > 0) {
-            new_data = new int[newLength];
-            for (size_t i = 0; i < newLength; ++i) {
-                new_data[i] = arrayData_[i];
-            }
-        }
+    // --- Операции с итераторами ---
+    iterator insert(iterator pos, int value);  // вставка перед pos
+    iterator erase(iterator pos);              // удаление одного
+    iterator erase(iterator first, iterator last); // удаление диапазона [first, last)
 
-        delete[] arrayData_;
-        arrayData_ = new_data;
-        arrayLength_ = newLength;
-    }
-
-    int arrayData(size_t index) const {
-        assert(index < arrayLength_ && "Индекс вышел за пределы массива!");
-        return arrayData_[index];
-    }
-
-    void arrayData(size_t index, int value) {
-        assert(index < arrayLength_ && "Индекс вышел за пределы массива!");
-        arrayData_[index] = value;
-    }
-
-    size_t arrayLength() const {
-        return arrayLength_;
-    }
+    // --- Потоковый ввод/вывод ---
+    friend std::ostream& operator<<(std::ostream& os, const DynamicArray& arr);
+    friend std::istream& operator>>(std::istream& is, DynamicArray& arr);
 };
-
-int main() {
-    DynamicArray arr;
-
-    std::cout << "--- Добавление элементов ---" << std::endl;
-    for (int i = 1; i <= 4; ++i) {
-        arr.push_back(i * 11);
-        std::cout << "Добавлено. Текущая длина: " << arr.arrayLength() << std::endl;
-    }
-
-    std::cout << "\nСодержимое массива: ";
-    for (size_t i = 0; i < arr.arrayLength(); ++i) {
-        std::cout << arr.arrayData(i) << " ";
-    }
-    std::cout << std::endl;
-
-    arr.arrayData(1, 99);
-    std::cout << "После изменения индекса 1: " << arr.arrayData(1) << std::endl;
-
-    std::cout << "\n--- Удаление элементов ---" << std::endl;
-    while (arr.arrayLength() > 0) {
-        arr.pop_back();
-        std::cout << "Удалено. Текущая длина: " << arr.arrayLength() << std::endl;
-    }
-    return 0;
-}
