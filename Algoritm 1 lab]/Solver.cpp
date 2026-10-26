@@ -27,7 +27,7 @@ long long pathCost(const Matrix& d, const std::vector<int>& path) {
 
 static bool nextPermutation(std::vector<int>& p) {
     int n = static_cast<int>(p.size());
-    int i = n - 2;
+    int i = n - 2; 
     while (i >= 0 && p[i] >= p[i + 1]) --i;
     if (i < 0) return false;
 
