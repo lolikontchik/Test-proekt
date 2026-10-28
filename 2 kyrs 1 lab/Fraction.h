@@ -59,4 +59,5 @@ public:
 
     friend std::istream& operator>>(std::istream& in,
         Fraction& fraction);
+    void printMixed() const;
 };

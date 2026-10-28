@@ -21,9 +21,9 @@ private:
 public:
     // --- Конструкторы / деструктор ---
     DynamicArray();
-    DynamicArray(const int* src, size_t count);           // из обычного массива
-    DynamicArray(const DynamicArray& other);              // копирования
-    DynamicArray(DynamicArray&& other) noexcept;          // перемещения
+    DynamicArray(const int* src, size_t count);
+    DynamicArray(const DynamicArray& other);
+    DynamicArray(DynamicArray&& other) noexcept;
     ~DynamicArray();
 
     // --- Присваивание ---
@@ -39,18 +39,18 @@ public:
     void swap(DynamicArray& other) noexcept;
 
     // --- Поиск ---
-    long long find(int value) const;          // индекс или -1
-    int  max() const;                          // требует непустого массива
-    int  min() const;                          // требует непустого массива
+    long long find(int value) const;
+    int  max() const;
+    int  min() const;
 
     // --- Модификация ---
-    bool insertAt(size_t index, int value);   // false при некорректном индексе
-    bool removeAt(size_t index);              // false при некорректном индексе
-    bool removeValue(int value);              // первое вхождение
-    void removeAll(int value);                // все вхождения
+    bool insertAt(size_t index, int value);
+    bool removeAt(size_t index);
+    bool removeValue(int value);
+    void removeAll(int value);
 
     // --- Сортировка ---
-    void sort();                               // по возрастанию
+    void sort();
 
     // --- Итераторы ---
     iterator       begin();
@@ -59,9 +59,9 @@ public:
     const_iterator end()   const;
 
     // --- Операции с итераторами ---
-    iterator insert(iterator pos, int value);  // вставка перед pos
-    iterator erase(iterator pos);              // удаление одного
-    iterator erase(iterator first, iterator last); // удаление диапазона [first, last)
+    iterator insert(iterator pos, int value);
+    iterator erase(iterator pos);
+    iterator erase(iterator first, iterator last);
 
     // --- Потоковый ввод/вывод ---
     friend std::ostream& operator<<(std::ostream& os, const DynamicArray& arr);

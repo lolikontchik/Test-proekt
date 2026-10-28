@@ -252,3 +252,17 @@ void Fraction::reduce() {
 
     normalize();
 }
+
+void printMixed() const {
+    int whole = numerator_ / denominator_;
+    int rem = std::abs(numerator_ % denominator_);
+
+    if (whole != 0) {
+        std::cout << whole;
+        if (rem != 0)std::cout << "" << rem << "/" << denominator_;
+    } else{
+        if (rem == 0) std::cout << 0;
+        else std::cout << numerator_ << "/" << denominator_;
+    }
+    std::cout << std::endl;
+}
