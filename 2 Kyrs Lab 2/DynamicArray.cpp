@@ -5,7 +5,7 @@
 #include <iostream>
 #include <utility>
 
-// ==================== Вспомогательные ====================
+// Вспомогательные
 
 void DynamicArray::reserve(size_t newCapacity) {
     if (newCapacity == capacity_) return;
@@ -25,7 +25,7 @@ void DynamicArray::shrinkIfNeeded() {
     }
 }
 
-// ==================== Конструкторы / деструктор ====================
+// Конструкторы / деструктор
 
 DynamicArray::DynamicArray()
     : data_(nullptr), size_(0), capacity_(0) {
@@ -65,7 +65,7 @@ DynamicArray::~DynamicArray() {
     delete[] data_;
 }
 
-// ==================== Присваивание ====================
+// Присваивание
 
 DynamicArray& DynamicArray::operator=(const DynamicArray& other) {
     if (this != &other) {
@@ -89,13 +89,13 @@ DynamicArray& DynamicArray::operator=(DynamicArray&& other) noexcept {
     return *this;
 }
 
-// ==================== Размер / состояние ====================
+// Размер / состояние
 
 size_t DynamicArray::size()     const { return size_; }
 size_t DynamicArray::capacity() const { return capacity_; }
 bool   DynamicArray::empty()    const { return size_ == 0; }
 
-// ==================== Обмен ====================
+// Обмен
 
 void DynamicArray::swap(DynamicArray& other) noexcept {
     std::swap(data_, other.data_);
@@ -103,7 +103,7 @@ void DynamicArray::swap(DynamicArray& other) noexcept {
     std::swap(capacity_, other.capacity_);
 }
 
-// ==================== Поиск ====================
+// Поиск
 
 long long DynamicArray::find(int value) const {
     for (size_t i = 0; i < size_; ++i) {
@@ -130,7 +130,7 @@ int DynamicArray::min() const {
     return m;
 }
 
-// ==================== Модификация ====================
+// Модификация
 
 bool DynamicArray::insertAt(size_t index, int value) {
     if (index > size_) return false;
@@ -176,7 +176,7 @@ void DynamicArray::removeAll(int value) {
     shrinkIfNeeded();
 }
 
-// ==================== Сортировка ====================
+// Сортировка
 
 void DynamicArray::sort() {
     for (size_t i = 1; i < size_; ++i) {
@@ -190,14 +190,14 @@ void DynamicArray::sort() {
     }
 }
 
-// ==================== Итераторы ====================
+// Итераторы
 
 DynamicArray::iterator       DynamicArray::begin() { return data_; }
 DynamicArray::iterator       DynamicArray::end() { return data_ + size_; }
 DynamicArray::const_iterator DynamicArray::begin() const { return data_; }
 DynamicArray::const_iterator DynamicArray::end()   const { return data_ + size_; }
 
-// ==================== Операции с итераторами ====================
+// Операции с итераторами
 
 DynamicArray::iterator DynamicArray::insert(iterator pos, int value) {
     size_t index = static_cast<size_t>(pos - data_);
@@ -225,7 +225,78 @@ DynamicArray::iterator DynamicArray::erase(iterator first, iterator last) {
     return data_ + start;
 }
 
-// ==================== Потоковый ввод/вывод ====================
+// === ПЕРЕГРУЗКИ ОПЕРАТОРОВ ===
+
+// --- Доступ по индексу ---
+
+int& DynamicArray::operator[](size_t index) {
+    assert(index < size_ && "Индекс вышел за пределы массива!");
+    return data_[index];
+}
+
+const int& DynamicArray::operator[](size_t index) const {
+    assert(index < size_ && "Индекс вышел за пределы массива!");
+    return data_[index];
+}
+
+// --- Добавление элемента в конец ---
+
+DynamicArray DynamicArray::operator+(int value) const {
+    DynamicArray result(*this);
+    result.push_back_value:
+    ;
+    result.insertAt(result.size_, value);
+    return result;
+}
+
+DynamicArray& DynamicArray::operator+=(int value) {
+    insertAt(size_, value);
+    return *this;
+}
+
+// --- Конкатенация ---
+
+DynamicArray DynamicArray::operator+(const DynamicArray& other) const {
+    DynamicArray result(*this);
+    result += other;
+    return result;
+}
+
+DynamicArray& DynamicArray::operator+=(const DynamicArray& other) {
+    if (this == &other) {
+        DynamicArray copy(other);
+        return *this += copy;
+    }
+
+    size_t required = size_ + other.size_;
+    if (required > capacity_) {
+        size_t newCap = capacity_ ? capacity_ : kMinCapacity;
+        while (newCap < required) newCap *= 2;
+        reserve(newCap);
+    }
+
+    for (size_t i = 0; i < other.size_; ++i) {
+        data_[size_ + i] = other.data_[i];
+    }
+    size_ = required;
+    return *this;
+}
+
+// --- Сравнение ---
+
+bool DynamicArray::operator==(const DynamicArray& other) const {
+    if (size_ != other.size_) return false;
+    for (size_t i = 0; i < size_; ++i) {
+        if (data_[i] != other.data_[i]) return false;
+    }
+    return true;
+}
+
+bool DynamicArray::operator!=(const DynamicArray& other) const {
+    return !(*this == other);
+}
+
+// === Потоковый ввод/вывод ===
 
 std::ostream& operator<<(std::ostream& os, const DynamicArray& arr) {
     os << '[';

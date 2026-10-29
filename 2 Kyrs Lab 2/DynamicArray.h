@@ -63,6 +63,24 @@ public:
     iterator erase(iterator pos);
     iterator erase(iterator first, iterator last);
 
+    // === ПЕРЕГРУЗКИ ОПЕРАТОРОВ ===
+
+    // Доступ по индексу
+    int& operator[](size_t index);
+    const int& operator[](size_t index) const;
+
+    // Добавление элемента в конец
+    DynamicArray  operator+(int value) const;
+    DynamicArray& operator+=(int value);
+
+    // Конкатенация
+    DynamicArray  operator+(const DynamicArray& other) const;
+    DynamicArray& operator+=(const DynamicArray& other);
+
+    // Сравнение
+    bool operator==(const DynamicArray& other) const;
+    bool operator!=(const DynamicArray& other) const;
+
     // --- Потоковый ввод/вывод ---
     friend std::ostream& operator<<(std::ostream& os, const DynamicArray& arr);
     friend std::istream& operator>>(std::istream& is, DynamicArray& arr);
