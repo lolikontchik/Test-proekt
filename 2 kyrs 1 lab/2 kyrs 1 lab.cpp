@@ -86,7 +86,6 @@ int main() {
 
     Fraction f(100, 4);
     std::cout << "вывод:";
-    f.printMixed();
 
 
     Fraction fraction(24, 36);
