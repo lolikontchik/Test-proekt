@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 
 #include <cstddef>
 #include <iosfwd>
@@ -19,51 +19,51 @@ private:
     void shrinkIfNeeded();
 
 public:
-    // --- Конструкторы / деструктор ---
+    // --- РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹ / РґРµСЃС‚СЂСѓРєС‚РѕСЂ ---
     DynamicArray();
     DynamicArray(const int* src, size_t count);
     DynamicArray(const DynamicArray& other);
     DynamicArray(DynamicArray&& other) noexcept;
     ~DynamicArray();
 
-    // --- Присваивание ---
+    // --- РџСЂРёСЃРІР°РёРІР°РЅРёРµ ---
     DynamicArray& operator=(const DynamicArray& other);
     DynamicArray& operator=(DynamicArray&& other) noexcept;
 
-    // --- Размер / состояние ---
+    // --- Р Р°Р·РјРµСЂ / СЃРѕСЃС‚РѕСЏРЅРёРµ ---
     size_t size()     const;
     size_t capacity() const;
     bool   empty()    const;
 
-    // --- Обмен ---
+    // --- РћР±РјРµРЅ ---
     void swap(DynamicArray& other) noexcept;
 
-    // --- Поиск ---
+    // --- РџРѕРёСЃРє ---
     long long find(int value) const;
     int  max() const;
     int  min() const;
 
-    // --- Модификация ---
+    // --- РњРѕРґРёС„РёРєР°С†РёСЏ ---
     bool insertAt(size_t index, int value);
     bool removeAt(size_t index);
     bool removeValue(int value);
     void removeAll(int value);
 
-    // --- Сортировка ---
+    // --- РЎРѕСЂС‚РёСЂРѕРІРєР° ---
     void sort();
 
-    // --- Итераторы ---
+    // --- РС‚РµСЂР°С‚РѕСЂС‹ ---
     iterator       begin();
     iterator       end();
     const_iterator begin() const;
     const_iterator end()   const;
 
-    // --- Операции с итераторами ---
+    // --- РћРїРµСЂР°С†РёРё СЃ РёС‚РµСЂР°С‚РѕСЂР°РјРё ---
     iterator insert(iterator pos, int value);
     iterator erase(iterator pos);
     iterator erase(iterator first, iterator last);
 
-    // --- Потоковый ввод/вывод ---
+    // --- РџРѕС‚РѕРєРѕРІС‹Р№ РІРІРѕРґ/РІС‹РІРѕРґ ---
     friend std::ostream& operator<<(std::ostream& os, const DynamicArray& arr);
     friend std::istream& operator>>(std::istream& is, DynamicArray& arr);
 };

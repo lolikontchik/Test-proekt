@@ -1,11 +1,11 @@
-#include "DynamicArray.h"
+п»ї#include "DynamicArray.h"
 
 #include <cassert>
 #include <algorithm>
 #include <iostream>
 #include <utility>
 
-// ==================== Вспомогательные ====================
+// ==================== Р’СЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Рµ ====================
 
 void DynamicArray::reserve(size_t newCapacity) {
     if (newCapacity == capacity_) return;
@@ -25,7 +25,7 @@ void DynamicArray::shrinkIfNeeded() {
     }
 }
 
-// ==================== Конструкторы / деструктор ====================
+// ==================== РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹ / РґРµСЃС‚СЂСѓРєС‚РѕСЂ ====================
 
 DynamicArray::DynamicArray()
     : data_(nullptr), size_(0), capacity_(0) {
@@ -65,7 +65,7 @@ DynamicArray::~DynamicArray() {
     delete[] data_;
 }
 
-// ==================== Присваивание ====================
+// ==================== РџСЂРёСЃРІР°РёРІР°РЅРёРµ ====================
 
 DynamicArray& DynamicArray::operator=(const DynamicArray& other) {
     if (this != &other) {
@@ -89,13 +89,13 @@ DynamicArray& DynamicArray::operator=(DynamicArray&& other) noexcept {
     return *this;
 }
 
-// ==================== Размер / состояние ====================
+// ==================== Р Р°Р·РјРµСЂ / СЃРѕСЃС‚РѕСЏРЅРёРµ ====================
 
 size_t DynamicArray::size()     const { return size_; }
 size_t DynamicArray::capacity() const { return capacity_; }
 bool   DynamicArray::empty()    const { return size_ == 0; }
 
-// ==================== Обмен ====================
+// ==================== РћР±РјРµРЅ ====================
 
 void DynamicArray::swap(DynamicArray& other) noexcept {
     std::swap(data_, other.data_);
@@ -103,7 +103,7 @@ void DynamicArray::swap(DynamicArray& other) noexcept {
     std::swap(capacity_, other.capacity_);
 }
 
-// ==================== Поиск ====================
+// ==================== РџРѕРёСЃРє ====================
 
 long long DynamicArray::find(int value) const {
     for (size_t i = 0; i < size_; ++i) {
@@ -113,7 +113,7 @@ long long DynamicArray::find(int value) const {
 }
 
 int DynamicArray::max() const {
-    assert(size_ > 0 && "max() на пустом массиве!");
+    assert(size_ > 0 && "max() РЅР° РїСѓСЃС‚РѕРј РјР°СЃСЃРёРІРµ!");
     int m = data_[0];
     for (size_t i = 1; i < size_; ++i) {
         if (data_[i] > m) m = data_[i];
@@ -122,7 +122,7 @@ int DynamicArray::max() const {
 }
 
 int DynamicArray::min() const {
-    assert(size_ > 0 && "min() на пустом массиве!");
+    assert(size_ > 0 && "min() РЅР° РїСѓСЃС‚РѕРј РјР°СЃСЃРёРІРµ!");
     int m = data_[0];
     for (size_t i = 1; i < size_; ++i) {
         if (data_[i] < m) m = data_[i];
@@ -130,7 +130,7 @@ int DynamicArray::min() const {
     return m;
 }
 
-// ==================== Модификация ====================
+// ==================== РњРѕРґРёС„РёРєР°С†РёСЏ ====================
 
 bool DynamicArray::insertAt(size_t index, int value) {
     if (index > size_) return false;
@@ -176,7 +176,7 @@ void DynamicArray::removeAll(int value) {
     shrinkIfNeeded();
 }
 
-// ==================== Сортировка ====================
+// ==================== РЎРѕСЂС‚РёСЂРѕРІРєР° ====================
 
 void DynamicArray::sort() {
     for (size_t i = 1; i < size_; ++i) {
@@ -190,14 +190,14 @@ void DynamicArray::sort() {
     }
 }
 
-// ==================== Итераторы ====================
+// ==================== РС‚РµСЂР°С‚РѕСЂС‹ ====================
 
 DynamicArray::iterator       DynamicArray::begin() { return data_; }
 DynamicArray::iterator       DynamicArray::end() { return data_ + size_; }
 DynamicArray::const_iterator DynamicArray::begin() const { return data_; }
 DynamicArray::const_iterator DynamicArray::end()   const { return data_ + size_; }
 
-// ==================== Операции с итераторами ====================
+// ==================== РћРїРµСЂР°С†РёРё СЃ РёС‚РµСЂР°С‚РѕСЂР°РјРё ====================
 
 DynamicArray::iterator DynamicArray::insert(iterator pos, int value) {
     size_t index = static_cast<size_t>(pos - data_);
@@ -225,7 +225,7 @@ DynamicArray::iterator DynamicArray::erase(iterator first, iterator last) {
     return data_ + start;
 }
 
-// ==================== Потоковый ввод/вывод ====================
+// ==================== РџРѕС‚РѕРєРѕРІС‹Р№ РІРІРѕРґ/РІС‹РІРѕРґ ====================
 
 std::ostream& operator<<(std::ostream& os, const DynamicArray& arr) {
     os << '[';
