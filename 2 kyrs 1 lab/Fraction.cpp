@@ -83,7 +83,6 @@ std::istream& operator>>(std::istream& in, Fraction& fraction) {
 
     fraction.setNumerator(numerator);
     fraction.setDenominator(denominator);
-    fraction.reduce();
 
     return in;
 }
@@ -208,6 +207,10 @@ Fraction Fraction::fromDouble(double value, int precision) {
 }
 
 // ---------- НОД ----------
+
+int Fraction::gcd() const {
+    return gcd(numerator_, denominator_);
+}
 
 int Fraction::gcd(int a, int b) {
     a = std::abs(a);

@@ -43,6 +43,7 @@ public:
     static Fraction fromDouble(double value, int precision = 6);
 
     static int gcd(int a, int b);
+    int gcd() const;
     void reduce();
 };
 

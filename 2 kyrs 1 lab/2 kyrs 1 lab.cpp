@@ -78,16 +78,23 @@ int main() {
     Fraction half = Fraction::fromDouble(0.5, 1);
     std::cout << "0.5 -> " << half << '\n';
 
-    std::cout << "\nНОД\n";
-    std::cout << "НОД(24, 36) = "
-        << Fraction::gcd(24, 36) << '\n';
+    std::cout << "НОД(a) = " << a.gcd() << '\n';
+    std::cout << "НОД(b) = " << b.gcd() << '\n';
 
     std::cout << "\nСокращение\n";
 
-    Fraction fraction(24, 36);
-    std::cout << "До сокращения: " << fraction << '\n';
-    fraction.reduce();
-    std::cout << "После сокращения: " << fraction << '\n';
+    Fraction fraction1 = a;
+
+    std::cout << "До сокращения: " << fraction1 << '\n';
+    fraction1.reduce();
+    std::cout << "После сокращения: " << fraction1 << '\n';
+
+    Fraction fraction2 = b;
+
+    std::cout << "\nДо сокращения: " << fraction2 << '\n';
+    fraction2.reduce();
+    std::cout << "После сокращения: " << fraction2 << '\n';
+
 
     return 0;
 }
