@@ -78,11 +78,11 @@ int main() {
     Fraction half = Fraction::fromDouble(0.5, 1);
     std::cout << "0.5 -> " << half << '\n';
 
-    std::cout << "\nНОД:\n";
+    std::cout << "\nНОД\n";
     std::cout << "НОД(24, 36) = "
         << Fraction::gcd(24, 36) << '\n';
 
-    std::cout << "\nСокращение:\n";
+    std::cout << "\nСокращение\n";
 
     Fraction f(100, 4);
     std::cout << "вывод:";
