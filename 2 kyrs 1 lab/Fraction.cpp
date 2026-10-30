@@ -13,9 +13,7 @@ Fraction::Fraction()
 Fraction::Fraction(int numerator, int denominator)
     : numerator_(numerator), denominator_(denominator) {
     if (denominator_ == 0) {
-        throw std::invalid_argument(
-            "Знаменатель не может быть равен нулю"
-        );
+        throw std::invalid_argument("Знаменатель не может быть равен нулю");
     }
     normalize();
 }
@@ -45,15 +43,13 @@ void Fraction::setNumerator(int numerator) {
 
 void Fraction::setDenominator(int denominator) {
     if (denominator == 0) {
-        throw std::invalid_argument(
-            "Знаменатель не может быть равен нулю"
-        );
+        throw std::invalid_argument("Знаменатель не может быть равен нулю");
     }
     denominator_ = denominator;
     normalize();
 }
 
-// ---------- Ввод и вывод ----------
+// ---------- Ввод и вывод (методы класса) ----------
 
 void Fraction::input() {
     std::cin >> *this;
@@ -63,15 +59,15 @@ void Fraction::output() const {
     std::cout << *this;
 }
 
-std::ostream& operator<<(std::ostream& out,
-    const Fraction& fraction) {
-    out << fraction.numerator_ << '/'
-        << fraction.denominator_;
+// ---------- Свободные операторы ввода/вывода (БЕЗ friend) ----------
+
+std::ostream& operator<<(std::ostream& out, const Fraction& fraction) {
+    out << fraction.getNumerator() << '/'
+        << fraction.getDenominator();
     return out;
 }
 
-std::istream& operator>>(std::istream& in,
-    Fraction& fraction) {
+std::istream& operator>>(std::istream& in, Fraction& fraction) {
     int numerator;
     int denominator;
     char slash;
@@ -85,9 +81,8 @@ std::istream& operator>>(std::istream& in,
         return in;
     }
 
-    fraction.numerator_ = numerator;
-    fraction.denominator_ = denominator;
-
+    fraction.setNumerator(numerator);
+    fraction.setDenominator(denominator);
     fraction.reduce();
 
     return in;
@@ -126,9 +121,7 @@ Fraction Fraction::operator*(const Fraction& other) const {
 
 Fraction Fraction::operator/(const Fraction& other) const {
     if (other.numerator_ == 0) {
-        throw std::invalid_argument(
-            "Нельзя делить на нулевую дробь"
-        );
+        throw std::invalid_argument("Нельзя делить на нулевую дробь");
     }
     Fraction result(
         numerator_ * other.denominator_,
@@ -196,31 +189,25 @@ double Fraction::toDouble() const {
 
 Fraction Fraction::fromDouble(double value, int precision) {
     if (precision < 0) {
-        throw std::invalid_argument(
-            "Точность не может быть отрицательной"
-        );
+        throw std::invalid_argument("Точность не может быть отрицательной");
     }
 
     int factor = 1;
     for (int i = 0; i < precision; ++i) {
         if (factor > std::numeric_limits<int>::max() / 10) {
-            throw std::overflow_error(
-                "Слишком большая точность"
-            );
+            throw std::overflow_error("Слишком большая точность");
         }
         factor *= 10;
     }
 
-    int numerator = static_cast<int>(
-        std::round(value * factor)
-        );
+    int numerator = static_cast<int>(std::round(value * factor));
 
     Fraction result(numerator, factor);
     result.reduce();
     return result;
 }
 
-// ---------- НОД (алгоритм Евклида) ----------
+// ---------- НОД ----------
 
 int Fraction::gcd(int a, int b) {
     a = std::abs(a);
