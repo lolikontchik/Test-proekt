@@ -17,9 +17,6 @@ Fraction::Fraction(int numerator, int denominator)
             "Знаменатель не может быть равен нулю"
         );
     }
-    // Только нормализуем знак.
-    // Сокращение — отдельная операция (reduce), вызывается
-    // в operator>> и в арифметических операторах.
     normalize();
 }
 
@@ -91,8 +88,6 @@ std::istream& operator>>(std::istream& in,
     fraction.numerator_ = numerator;
     fraction.denominator_ = denominator;
 
-    // ВАЖНО: сокращаем именно то, что ввёл пользователь.
-    // reduce() внутри также вызывает normalize().
     fraction.reduce();
 
     return in;
