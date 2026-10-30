@@ -59,7 +59,7 @@ void Fraction::output() const {
     std::cout << *this;
 }
 
-// ---------- Свободные операторы ввода/вывода (БЕЗ friend) ----------
+// ---------- Свободные операторы ввода/вывода ----------
 
 std::ostream& operator<<(std::ostream& out, const Fraction& fraction) {
     out << fraction.getNumerator() << '/'
